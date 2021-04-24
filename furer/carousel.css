@@ -1,0 +1,174 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+  /* padding-top: 10rem; */
+  background-image: url(imagins/fon.jpg);
+  background-attachment:fixed;
+  padding-bottom: 3rem;
+  color: #5a5a5a;
+  width: 100%;
+  height: 100%;
+  /* background-position: fixed; */
+}
+
+h1 {
+  color: black;
+  font-size: 330%;
+  /* background: deeppink; */
+}
+
+.x p {
+  color: black;
+}
+
+.text-carousel {
+  background: lime;
+}
+
+.btn-outline-success {
+  margin-right: 10px;
+}
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  margin-bottom: 4rem;
+  
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+  height: 32rem;
+}
+.carousel-item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 32rem;
+}
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.card-text-svg {
+  text-anchor: middle;
+  font-size: 130%;
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+  color: black;
+}
+
+.bd-placeholder-img image {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.card-text {
+  font-family: 'Courier New', Courier, monospace;
+  /* color: black; */
+}
+
+.img-responsive {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.page-link {  
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+
+}
+
+/* -------------------------------------------------*/ 
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(184, 184, 184);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  /* -webkit-transition: .4s; */
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #164870;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #164870;
+}
+
+input:checked + .slider:before {
+  /* -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px); */
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 20px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 40em) {
+  /* Bump up size of carousel content */
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 62em) {
+  .featurette-heading {
+    margin-top: 7rem;
+  }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <style>
+    input::-webkit-input-placeholder { 
+        color: blue;
+    }
+  </style>
+
+  <p><input type="search" placeholder="Поиск по сайту" id="editMe"/></p>
+  <!-- <p><textarea class="placeholder" placeholder="Ваше сообщение"></textarea></p> -->
+
+
+  <!-- <style>
+    .raz {
+      position: relative;
+    }
+    .raz span {
+      position: absolute;
+      bottom: 0;
+      left: 2px;
+      opacity: .5;
+      visibility: hidden;
+      transition: .2s;
+    }
+    .raz input:placeholder-shown ~ span {
+      visibility: visible;
+    }
+    .raz input:placeholder-shown:focus ~ span,
+    .raz input:not(:placeholder-shown) ~ span {
+      bottom: 100%;
+      opacity: 1;
+      font-size: 80%;
+      visibility: visible;
+    }
+    </style>
+    
+    <label class="raz">
+      <input type="email" placeholder="Email">
+      <span>
+        Email
+      </span>
+    </label> -->
+
+
+  <button id="do1">do1</button>
+  <!-- <button id="do2">do2</button> -->
+  <!-- <button id="do3">do3</button> -->
+  
+  
+    <script>
+
+          // создадим элемент с прокруткой
+    
+        // const ele = document.getElementById('editMe');
+
+        // // Get the placeholder attribute
+        // const placeholder = ele.getAttribute('data-placeholder');
+
+        // // Set the placeholder as initial content if it's empty
+        // (ele.innerHTML === '') &amp;&amp; (ele.innerHTML = placeholder);
+
+        // ele.addEventListener('focus', function(e) {
+        //     const value = e.target.innerHTML;
+        //     value === placeholder &amp;&amp; (e.target.innerHTML = '');
+        // });
+
+        // ele.addEventListener('blur', function(e) {
+        //     const value = e.target.innerHTML;
+        //     value === '' &amp;&amp; (e.target.innerHTML = placeholder);
+        // });
+
+      document.getElementById("do1").addEventListener("click", function(){
+        let div = document.createElement('div');
+
+        div.style.overflowY = 'scroll';
+        div.style.width = '50px';
+        div.style.height = '50px';
+
+        document.body.append(div);
+        let scrollWidth = div.offsetWidth - div.clientWidth;
+
+        // div.remove();
+
+        console.log(scrollWidth);
+
+      });
+
+      // document.getElementById("do2").addEventListener("click", function(){
+      //     document.getElementsByTagName("select")[0].innerHTML += '<option value="Classic">Классика</option>';
+      // });
+
+      // document.getElementById("do3").addEventListener("click", function(){
+      //   document.getElementsByTagName("option")[2].setAttribute("selected", "");
+      // });
+      
+
+
+      // let li = document.getElementsByTagName("LI")
+      // for (let i = 0; i<li.length; i ++) {
+      //     let a = li[i].getElementsByTagName("A")[0]
+      //     if (a.hasAttribute("href") && a.getAttribute("href").indexOf("://") != -1 && li[i].textContent.indexOf("http://internal.com") == -1){
+      //       li[i].classList.add("external")
+      //     }
+               
+      // }
+
+    </script>
+</body>
+
+</html>
+

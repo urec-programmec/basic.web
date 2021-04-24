@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Лабиринт</title>
+    <style>
+
+        body {
+            /* background-color: rgb(255, 0, 170); */
+        }
+
+        .d1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            font-family: 'Merriweather', serif;
+            color: #465457;
+            letter-spacing: 10px;
+            margin-bottom: 1%;
+            
+        }              
+
+        .size{
+            margin-left: auto;
+            margin-right: auto;
+            width: 8em;
+            margin-bottom: 1%;
+        }
+        
+        #table {
+            margin: 0 auto;
+            /* width: 100px; */
+            
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .node {
+            width: 50px;
+            height: 50px;
+            border: 1px solid black;                        
+        }        
+
+        .man {
+            background-image: url("source/man.jpg");
+        }
+
+        .wall {
+            background-image: url("source/wall.jpg");
+        }
+
+        .varrior {
+            background-image: url("source/varrior.jpg");
+        }
+
+
+    </style>
+<body> 
+
+    <div class="d1">ЛАБИРИНТ</div>
+    
+
+    <div class="size">
+        <select id="sizex">   
+                 
+        </select> 
+    </div>
+
+    <div id="table"></div>
+
+    <script>
+        // 
+
+        let sizex = document.getElementById("sizex");
+        // console.log(sizex)
+        let start = 15
+        let end = 20
+        let perc = 40
+        let array = []
+
+        for (let i = start; i <= end; i++){ 
+            let temp = document.createElement("option");
+            // if (i == start)
+            //     temp.setAttribute("selected", true);    
+            temp.setAttribute("value", i);
+            temp.appendChild(document.createTextNode("______" + i + "______"))
+            sizex.appendChild(temp);
+        }
+
+        createLab()
+
+        sizex.addEventListener("change", function() {
+            document.getElementById("table").innerHTML = ""
+            createLab()
+        });
+
+        function createLab(){
+            let count = document.getElementById("sizex").value
+            let div = document.getElementById("table");
+            
+            // console.log(div)
+
+            let temp, tempA;
+
+            for (let i = 0; i < count; i++){
+                temp = document.createElement("div")
+                tempA = []
+                temp.setAttribute("class", "row")
+                for (let j = 0; j < count; j++){                    
+                    let node = document.createElement("div")
+                    node.setAttribute("class", "node")
+                    tempA[j] = [node, 0];
+                    temp.appendChild(node)
+                }
+                div.appendChild(temp)
+                array[i] = tempA;
+            } 
+
+            div.style.width = (count * 52) + "px"
+
+            let man_x = parseInt(Math.random() * count)
+            while (man_x == count - 1 || man_x == 0)
+                man_x = parseInt(Math.random() * count)
+
+            let man_y = parseInt(Math.random() * count)
+            while (man_y == count - 1 || man_y == 0)
+                man_y = parseInt(Math.random() * count)
+
+
+            array[man_y][man_x][0].classList.add('man');
+            array[man_y][man_x][1] = 1;
+
+            let var_x = parseInt(Math.random() * count)
+            while (var_x == man_x || var_x == count - 1 || var_x == 0) 
+                var_x = parseInt(Math.random() * count)
+
+            let var_y = parseInt(Math.random() * count)
+            while (var_y == man_y || var_y == count - 1 || var_y == 0) 
+                var_y = parseInt(Math.random() * count)
+
+            
+
+            array[var_y][var_x][0].classList.add('varrior');
+            array[var_y][var_x][1] = 2;
+
+
+            // console.log(array[man_y][man_x][0])
+
+            for (let i = 0; i < count; i++){
+                array[0][i][0].classList.add('wall');
+                array[0][i][1] = -1
+
+                array[count - 1][i][0].classList.add('wall');
+                array[count - 1][i][1] = -1
+
+                array[i][0][0].classList.add('wall');
+                array[i][0][1] = -1
+
+                array[i][count - 1][0].classList.add('wall');
+                array[i][count - 1][1] = -1
+            }
+
+            for (let i = 0; i < count; i++){
+                for (let j = 0; j < count; j++){
+                    if (Math.random() * 100 < perc && array[i][j][1] == 0){
+                        array[i][j][0].classList.add('wall');
+                        array[i][j][1] = -1;
+                    }
+                }
+            }
+
+            let WAY = kill(var_x, var_y)
+            console.log(WAY)
+
+            function kill(var_xx, var_yy) {
+                let current_x = var_xx
+                let current_y = var_yy
+                let parent_node_list = [['', var_xx, var_yy]]
+                let children_node_list = []
+                let way = ''
+
+                // console.log(parent_node_list)
+                while (true){
+
+                    for (let i = 0; i < parent_node_list.length; i++){
+                        current_x = parent_node_list[i][1]
+                        current_y = parent_node_list[i][2]
+                        
+                        // console.log(current_y)
+
+                        if (current_x != count - 2 && array[current_y][current_x + 1][1] == 1) {
+                            console.log("KILL!")
+                            way = parent_node_list[i][0]
+                            return way
+                        }
+                        else if (current_x != count - 2 && array[current_y][current_x + 1][1] == 0) {
+                            children_node_list[children_node_list.length] = [parent_node_list[i][0] + 'r', current_x + 1, current_y]
+                        }
+
+                        if (current_x != 1 && array[current_y][current_x - 1][1] == 1) {
+                            console.log("KILL!")
+                            way = parent_node_list[i][0]
+                            return way
+                        }
+                        else if (current_x != 1 && array[current_y][current_x - 1][1] == 0) {
+                            children_node_list[children_node_list.length] = [parent_node_list[i][0] + 'l', current_x - 1, current_y]
+                        }
+
+                        if (current_y != count - 2 && array[current_y + 1][current_x][1] == 1) {
+                            console.log("KILL!")
+                            way = parent_node_list[i][0]
+                            return way
+                        }
+                        else if (current_y != count - 2 && array[current_y + 1][current_x][1] == 0) {
+                            children_node_list[children_node_list.length] = [parent_node_list[i][0] + 'd', current_x, current_y + 1]
+                        }
+
+                        if (current_y != 1 && array[current_y - 1][current_x][1] == 1) {
+                            console.log("KILL!")
+                            way = parent_node_list[i][0]
+                            return way
+                        }
+                        else if (current_y != 1 && array[current_y - 1][current_x][1] == 0) {
+                            children_node_list[children_node_list.length] = [parent_node_list[i][0] + 'u', current_x, current_y - 1]
+                        }
+
+                        // пометить ячейку
+                        array[current_y][current_x][1] = 100
+                        
+                    }
+                    
+                    // проверить children
+                    if (children_node_list.length == 0){
+                        console.log ("I CANT KILL HIM!!!")
+                        return ''
+                    }
+
+                    // поменять местами массивы
+                    parent_node_list = children_node_list
+                    children_node_list = []
+                
+                }
+
+            }
+
+            if (WAY == '') 
+                setTimeout(() => alert("Герой никогда не умрёт"), 1000)
+            else {
+                let i = 0;
+                // for (let i = 0; i < WAY.length; i++){
+                let go = setInterval(() => {
+                    array[var_y][var_x][0].classList.remove('varrior')
+                    
+                    if (WAY[i] == "l") 
+                        var_x --
+                    if (WAY[i] == "r") 
+                        var_x ++
+                    if (WAY[i] == "d") 
+                        var_y ++
+                    if (WAY[i] == "u") 
+                        var_y --
+                                                                        
+                    array[var_y][var_x][0].classList.add('varrior')
+                
+                    if (i == WAY.length - 1){
+                        setTimeout(() => alert("Герой умер"), 100)
+                        clearInterval(go)
+                    }
+                    i ++;
+                }, 350)
+                // }
+
+            }
+
+            
+
+        }
+    </script>
+</body>

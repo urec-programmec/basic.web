@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Life</title>
+    <!-- <link rel="stylesheet" type="text/css" href="index.css"> -->
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <style>
+
+        body {
+            margin: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .top {
+            border-top: 1px solid black;
+        }
+
+        .left {
+            border-left: 1px solid black;
+        }
+
+        .cell{
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        #life {                       
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            height: 100%;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .alive {
+            background: black;
+        }
+
+        .dead {
+            background: white;
+        }
+        
+        #count {
+            position: absolute;
+            background-color: white;
+            font-size: 20;
+            opacity: 0.8;
+            /* height: 100px;
+            width: 100px; */
+        }
+        .wall{
+            background-color: red;
+        }
+
+    </style>
+<body> 
+
+    <div id="count"></div>
+    <div id="life"></div>
+
+    <script>
+    $(document).ready(function () {
+
+        let size = 15;
+        let windowSizeW = parseInt($(window).width() / size) - 1;
+        let windowSizeH = parseInt($(window).height() / size) - 1;
+        let temp = null;
+        let tempCell = null;
+        let life = [];
+        let tempLife = null;
+        let percent = 50;
+        let mdown = false;
+        let paint = true;
+        let db = false;
+
+        // $(document).dblclick(() => {
+            
+        //     mdown = !mdown;
+        //     db = true;
+        //     // console.log(mdown);
+        // });
+
+        $(document).keydown((e) => {
+            // console.log(e.keyCode);
+            if (e.keyCode == 17);
+                paint = false;
+        });
+
+        $(document).keyup((e) => {
+            // console.log(e.keyCode);
+            if (e.keyCode == 17);
+                paint = true;
+        });
+
+        $(document).click(() => {
+
+            mdown = !mdown;
+
+            // if (mdown){
+                
+            //     db = false;
+            //     return null;
+            // }
+            // if (!db){
+            //     // mdown = true;
+            //     // setTimeout(() => {
+            //     //     mdown = false;
+            //     // }, 10 size)
+            // }
+            
+            // console.log(mdown);
+        });
+
+        function makeWall(){
+                    tempCell.classList.add(this.wall);
+                }
+        // console.log(windowSizeW);
+        // console.log(windowSizeH);
+
+        for (let j = 0; j < windowSizeH; j++){
+            temp = document.createElement("div");
+            temp.classList.add("row");
+            life.push([])
+            for (let i = 0; i < windowSizeW; i++){
+                tempCell = document.createElement("div");
+                tempCell.classList.add("cell");   
+                tempCell.id = "cell_" + j + "_" + i;
+                tempCell.onmousemove = () => {
+                    if (mdown && paint && !document.getElementById("cell_" + j + "_" + i).classList.contains("wall"))
+                        document.getElementById("cell_" + j + "_" + i).classList.add("wall");
+                    if (mdown && !paint && document.getElementById("cell_" + j + "_" + i).classList.contains("wall"))
+                        document.getElementById("cell_" + j + "_" + i).classList.remove("wall");
+                    // console.log(document.getElementById("cell_" + j + "_" + i).classList.contains("wall"));
+                };             
+                // tempCell.onmouseup = tempCell.onmouseover;
+                if (i == 0)
+                    tempCell.classList.add("left");
+
+                if (j == 0)
+                    tempCell.classList.add("top");
+                
+
+                tempLife = new Cell(i, j, life, false, tempCell);
+                tempLife = new Cell(i, j, life, Math.random() < percent / 100, tempCell);
+                life[j].push(tempLife);
+                temp.appendChild(tempCell);
+            }
+            $("#life").append(temp);
+        } 
+
+        let middleX = 3 * parseInt(windowSizeW / 4) - 20;
+        let middleY = parseInt(windowSizeH / 4) - 10;
+
+        
+        life[middleY + 3][middleX].setState(true);
+        life[middleY + 4][middleX].setState(true);
+        
+        life[middleY + 3][middleX + 1].setState(true);
+        life[middleY + 4][middleX + 1].setState(true);
+        
+        life[middleY][middleX + 8].setState(true);
+        life[middleY][middleX + 9].setState(true);
+        
+        life[middleY + 1][middleX + 6].setState(true);
+        life[middleY + 1][middleX + 10].setState(true);
+        
+        life[middleY + 2][middleX + 5].setState(true);
+        life[middleY + 2][middleX + 11].setState(true);
+        
+        life[middleY + 3][middleX + 5].setState(true);
+        life[middleY + 3][middleX + 11].setState(true);
+        
+        life[middleY + 3][middleX + 4].setState(true);
+        life[middleY + 3][middleX + 7].setState(true);    
+
+        life[middleY + 4][middleX + 5].setState(true);
+        life[middleY + 4][middleX + 11].setState(true);
+        
+        life[middleY + 5][middleX + 6].setState(true);
+        life[middleY + 5][middleX + 10].setState(true);
+        
+        life[middleY + 6][middleX + 8].setState(true);
+        life[middleY + 6][middleX + 9].setState(true);
+        
+        life[middleY + 7][middleX + 13].setState(true);
+        life[middleY + 7][middleX + 15].setState(true);
+        
+        life[middleY + 8][middleX + 13].setState(true);
+        life[middleY + 8][middleX + 14].setState(true);
+        life[middleY + 9][middleX + 14].setState(true);
+
+
+
+        middleX += 21;
+
+        life[middleY + 5][middleX].setState(true);
+        
+        life[middleY + 4][middleX + 1].setState(true);
+        life[middleY + 4][middleX + 2].setState(true);
+
+        life[middleY + 5][middleX + 1].setState(true);
+        life[middleY + 5][middleX + 2].setState(true);
+        
+        life[middleY + 6][middleX + 1].setState(true);
+        life[middleY + 6][middleX + 2].setState(true);
+
+        life[middleY + 2][middleX + 4].setState(true);
+        life[middleY + 2][middleX + 5].setState(true);
+
+        life[middleY + 3][middleX + 4].setState(true);
+        life[middleY + 3][middleX + 5].setState(true);
+
+        life[middleY + 7][middleX + 4].setState(true);
+        life[middleY + 7][middleX + 5].setState(true);
+
+        life[middleY + 8][middleX + 4].setState(true);
+        life[middleY + 8][middleX + 5].setState(true);
+
+        middleX += 8;
+
+        life[middleY + 5][middleX].setState(true);
+        life[middleY + 4][middleX + 1].setState(true);
+        life[middleY + 6][middleX + 1].setState(true);
+
+        life[middleY + 3][middleX + 2].setState(true);
+        life[middleY + 4][middleX + 2].setState(true);
+
+        life[middleY + 3][middleX + 3].setState(true);
+        life[middleY + 4][middleX + 3].setState(true);
+        
+        life[middleY + 3][middleX + 4].setState(true);
+        life[middleY + 4][middleX + 4].setState(true);
+        life[middleY + 5][middleX + 4].setState(true);
+
+        life[middleY + 4][middleX + 5].setState(true);
+
+        life[middleY + 5][middleX + 6].setState(true);
+        life[middleY + 6][middleX + 6].setState(true);
+
+        life[middleY + 6][middleX + 5].setState(true);
+
+
+
+
+
+
+
+
+        $(".cell").css("height", size);
+        $(".cell").css("width", size);
+        
+
+        // console.log(life);
+        for (let i = 0; i < life.length; i++)
+            for (let j = 0; j < life[0].length; j++)
+                life[i][j].decide();
+            // i.decide();
+
+        let state = 1;
+        let state1 = 2;
+        let state2 = 3;
+        let state3 = 4;
+        let state4 = 5;
+        let state5 = 6;
+
+        let game = setInterval(() => {
+            for (let i = 0; i < life.length; i++)
+                for (let j = 0; j < life[0].length; j++)
+                    life[i][j].makeIteration();
+
+            let cnt = 0;
+            for (let i = 0; i < life.length; i++)
+                for (let j = 0; j < life[0].length; j++){
+                    life[i][j].decide();
+                    if (life[i][j].State == "alive")
+                        cnt ++;
+                }
+            // console.log($("#count"))
+
+
+            state5 = state4;
+            state4 = state3;
+            state3 = state2;
+            state2 = state1;
+            state1 = state;
+            state = cnt;
+            
+            $("#count").html("Живых осталось " + state);
+            
+            if (state == state5 && (state == state2 || state == state3)){
+                clearInterval(game);
+                alert("Игра окончена!");
+
+            }}, 10 *  size);
+
+
+           
+    });
+
+
+
+    class Cell {
+        constructor(x, y, life, state, div) {
+            this.X = x;
+            this.Y = y;
+            this.Life = life; 
+            this.State = state; 
+            this.Div = div;
+            this.Pre = state;
+            this.alive = "alive";
+            this.dead = "dead";
+            this.wall = "wall";
+            // this.decide();
+        }
+
+        setState(state){
+            this.State = state;
+        }
+
+        decide(){
+            if ((this.State == true || this.Pre == this.alive) && this.State != this.wall)
+                this.aliveX();
+            else
+                this.deadX();
+        }
+
+        aliveX(){
+            // console.log(this.Life[this.Y][this.X]);
+            this.Div.classList.remove(this.dead);
+            this.Div.classList.add(this.alive);
+            this.State = this.alive;
+        }
+        
+        deadX(){
+            // console.log(this.Life)
+            // console.log(this.Life[this.Y][this.X]);
+            this.Div.classList.add(this.dead);
+            this.Div.classList.remove(this.alive);
+            this.State = this.dead;
+        }
+        
+        makeIteration(){
+            if (this.Div.classList.contains(this.wall))
+                this.State = this.wall;
+            // else if (this.State == this.wall)
+            //     this.State = this.dead;
+
+            if (this.State == this.wall)
+                return null
+
+
+            let nears = [];
+            if (this.X == 0 && this.Y == 0){
+                nears.push(this.Life[0][1]);
+                nears.push(this.Life[1][1]);
+                nears.push(this.Life[1][0]); 
+            }
+            else if (this.Y == 0){
+                nears.push(this.Life[0][this.X - 1]);
+                nears.push(this.Life[1][this.X - 1]);
+                nears.push(this.Life[1][this.X]);
+                if (this.X != this.Life[0].length - 1){
+                    nears.push(this.Life[1][this.X + 1]);
+                    nears.push(this.Life[0][this.X + 1]);
+                }
+            }
+            else if (this.X == 0){
+                nears.push(this.Life[this.Y - 1][0]);
+                nears.push(this.Life[this.Y - 1][1]);
+                nears.push(this.Life[this.Y][1]);
+                if (this.Y != this.Life.length - 1){
+                    nears.push(this.Life[this.Y + 1][1]);
+                    nears.push(this.Life[this.Y + 1][0]);
+                }
+            }
+            else {
+                nears.push(this.Life[this.Y][this.X - 1]);
+                nears.push(this.Life[this.Y - 1][this.X]);
+                nears.push(this.Life[this.Y - 1][this.X - 1]);
+                
+                if (this.Y != this.Life.length - 1){
+                    nears.push(this.Life[this.Y + 1][this.X]);
+                    nears.push(this.Life[this.Y + 1][this.X - 1]);
+                }
+                if (this.X != this.Life[0].length - 1){
+                    nears.push(this.Life[this.Y][this.X + 1]);                    
+                    nears.push(this.Life[this.Y - 1][this.X + 1]);                    
+                }
+                if (this.X != this.Life[0].length - 1 && this.Y != this.Life.length - 1){
+                    nears.push(this.Life[this.Y + 1][this.X + 1]);                
+                }                
+            }
+
+            let cnt = 0;
+            // console.log(nears);
+            for (let i = 0; i < nears.length; i++){
+                // console.log(nears[i]);                
+                if (nears[i].State == this.alive)
+                    cnt ++;
+            }
+            
+
+            if (this.State == this.dead && cnt == 3)
+                this.Pre = this.alive;
+                            
+            else if (this.State == this.alive && cnt == 2 || cnt == 3)
+                this.Pre = this.alive;
+            else 
+                this.Pre = this.dead;
+
+            // else if (!(this.State == this.alive && (cnt == 3 || cnt == 2) || this.State == this.dead))
+            //     this.Pre = this.dead;    
+            // this.dead();
+
+        }        
+    }
+    </script>
+</body>
